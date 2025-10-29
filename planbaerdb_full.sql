@@ -47,7 +47,7 @@ INSERT INTO `m_position` VALUES
 (7,'Sprachförderkraft / Logopäde'),
 (8,'Musikpädagogik / Kunstpädagogik'),
 (9,'Therapeutische Fachkraft'),
-(10,'Verwaltungsmitarbeiter/in'),
+(10,'Verwaltungsmitarbeitende/in'),
 (11,'Hausmeister/in'),
 (12,'Küchenpersonal / Koch/Köchin'),
 (13,'Reinigungskraft');
