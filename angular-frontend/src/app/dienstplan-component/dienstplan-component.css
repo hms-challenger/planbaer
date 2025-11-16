@@ -1,0 +1,158 @@
+table.dienstplan {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+}
+
+th, td {
+  border: 1px solid #d0d7de;
+  text-align: center;
+  vertical-align: middle;
+  padding: 4px;
+  width: 140px;
+  height: auto; /* dynamische Höhe */
+}
+
+th {
+  background: #f7f9fb;
+  font-weight: 600;
+  font-size: 16px;
+  height: 48px;
+}
+
+.team {
+  background: #f9f9f9;
+  font-weight: 500;
+  width: 180px;
+  min-width: 180px;
+  max-width: 180px;
+  text-align: left;
+  padding: 10px;
+}
+
+.nameheader {
+  font-size:x-large;
+  font-weight: 900;
+}
+
+.nameheaderLeft {
+  font-weight: 600;
+}
+
+/* Admin-Zeile */
+.admin-row td {
+  height: 35px;
+  background-color: #93c7ec;
+}
+
+.admin-select {
+  width: 100%;
+  height: 28px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #888;
+  padding: 0 4px;
+}
+
+/* Nur die Tag-Felder sollen quadratisch bleiben */
+.tag-feld {
+  width: 140px;
+  height: 140px;
+  padding: 2px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* [+] Button */
+.plus {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+  color: green;
+  cursor: pointer;
+  border: 1px dashed #ccc;
+  border-radius: 4px;
+}
+
+/* Expandierte Zelle */
+.expanded-cell {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+/* Zeilen im expandierten Feld */
+.zeile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.zeile input[type="time"] {
+  width: 55px;
+  height: 28px;
+  font-size: 13px;
+  padding: 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.zeile.tags {
+  font-size: 12px;
+  color: #888;
+}
+
+.zeile.stunden {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: 600;
+  color: #1a5d1a;
+}
+
+.team-stunden {
+  font-weight: 500;
+  font-size: 12px;
+  color: #006400;
+}
+
+.expanded-cell .trash {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: red;
+}
+
+/* Speichern Button */
+button {
+  margin-top: 16px;
+  padding: 9px 18px;
+  background: #0078d7;
+  border: none;
+  color: white;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #005fa3;
+}
+
+.ueberstunden {
+  color: red;
+  font-weight: 600;
+  background-color: rgba(255, 0, 0, 0.1); /* leicht rot hinterlegt */
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+

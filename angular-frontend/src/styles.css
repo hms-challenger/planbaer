@@ -1,0 +1,8 @@
+/* ===== Global Font ===== */
+html, body {
+  font-family: 'Poppins', sans-serif;
+  color: #222;
+  background-color: #f9fafc;
+  margin: 0;
+  padding: 0;
+}

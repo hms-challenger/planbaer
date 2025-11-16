@@ -1,0 +1,151 @@
+/* ====== GLOBAL ====== */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ====== HEADER ====== */
+.header {
+  background: linear-gradient(90deg, #59A45F, #3b6d3f);
+  color: white;
+  width: 100%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  padding: 0.75rem 0; /* nur vertikal */
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+/* Logo + Titel nebeneinander */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* Abstand zwischen Logo und Text */
+}
+
+.logo-image {
+  height: 40px;        /* oder was passt */
+  width: auto;
+  object-fit: contain; /* Logo bleibt im richtigen Verhältnis */
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin: 0;
+  color: white; /* falls du einen dunklen Header hast */
+}
+
+
+/* ====== NAVIGATION ====== */
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  position: relative;
+  padding: 0.25rem 0;
+  transition: color 0.3s ease;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background-color: white;
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+  width: 100%;
+}
+
+.nav-links a:hover {
+  color: #e3f2fd;
+}
+
+/* ====== MAIN ====== */
+.main {
+  flex: 1;
+  width: 100%;
+  max-width: none;   /* entfernt max-width */
+  margin: 0;         /* kein zentrieren */
+  padding: 1rem;     /* optional, innenabstand */
+}
+
+/* ====== FOOTER ====== */
+.footer {
+  background: linear-gradient(135deg, #59A45F, #3b6d3f);
+  width: 100%;
+  padding: 1.5rem 2rem; /* vertikal + horizontal */
+  font-size: 0.9rem;
+  color: #e3f2fd;
+  display: flex;
+  justify-content: flex-end; /* Inhalt nach rechts */
+  align-items: center;
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .nav-links a {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .logo-image {
+    height: 32px;
+  }
+
+  .logo-text {
+    font-size: 1.2rem;
+  }
+}

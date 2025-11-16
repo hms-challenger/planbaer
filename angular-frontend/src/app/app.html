@@ -1,0 +1,25 @@
+<!-- app.component.html -->
+<header class="header">
+  <div class="header-content">
+    <img src="assets/planbaer_logo_kl.png" alt="Logo" class="logo-image">
+    <h1 class="logo">Planbär Dienstplan</h1>
+
+    <nav class="nav-links">
+      <a routerLink="/team" routerLinkActive="active">Team</a>
+      <a routerLink="/kinder" routerLinkActive="active">Kinder</a>
+      <a routerLink="/eltern" routerLinkActive="active">Eltern</a>
+      <a routerLink="/dienstplan" routerLinkActive="active">Dienstplan</a>
+    </nav>
+  </div>
+</header>
+
+<main class="main">
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="footer">
+  <div class="footer-content">
+    &copy; 2025 hms-challenger [planbaer dienstplan version 0.1]
+  </div>
+</footer>
+

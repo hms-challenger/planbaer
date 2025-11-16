@@ -1,0 +1,140 @@
+/* Gesamtes Dialog-Formular */
+.dialog-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 1.5rem 1rem;
+  box-sizing: border-box;
+}
+
+/* Titel des Dialogs */
+.dialog-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-align: center;
+  color: #222;
+}
+
+/* Divider für Abschnitte */
+.divider {
+  grid-column: 1 / -1; /* volle Breite */
+  margin-top: 1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #333;
+  padding-bottom: 0.25rem;
+  text-align: left;
+}
+
+/* Flex-Reihen für kleinere Felder nebeneinander */
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Kleine Felder wie Hausnummer, PLZ, Team, Soll, Vorbereitung */
+.small-field {
+  flex: 0 0 120px;
+}
+
+/* Große Felder wachsen automatisch */
+.flex-grow {
+  flex: 1;
+  min-width: 200px;
+}
+
+/* Form-Field Grundstil */
+mat-form-field {
+  font-size: 0.85rem;
+  width: 100%;
+}
+
+/* Padding für Input Text */
+.padded-field .mat-mdc-input-element {
+  padding-left: 0.5rem;
+}
+
+/* Optional: Select & Datepicker Labels angleichen */
+.padded-field .mat-mdc-select-value,
+.padded-field .mat-mdc-floating-label {
+  padding-left: 0.5rem;
+}
+
+/* Dialog Buttons unten */
+.dialog-actions {
+  margin-top: 1.25rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+/* Button Hover Effekt */
+button {
+  min-width: 100px;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  filter: brightness(0);
+}
+
+/* Ladeanzeige zentrieren */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+/* Optional: leicht abgerundete Ecken für Inputs */
+.mat-mdc-form-field {
+  border-radius: 6px;
+}
+
+.mat-mdc-form-field-outline {
+  border-radius: 6px;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 200px;
+  background-color: #333;
+  color: #fff;
+  text-align: left;
+  border-radius: 6px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1000;
+  bottom: 110%; /* Tooltip über dem Feld anzeigen */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  white-space: pre-line; /* Ermöglicht Zeilenumbrüche */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  pointer-events: none; /* verhindert, dass Tooltip Fokus abfängt */
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+
+
+
+
+

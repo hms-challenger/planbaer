@@ -1,0 +1,40 @@
+<div class="expanded-cell">
+
+  <!-- Zeile 1: Arbeitszeit -->
+  <div class="zeile arbeitszeit">
+    <input type="time" [(ngModel)]="tagData.start" (change)="berechneStunden()">
+    <span>–</span>
+    <input type="time" [(ngModel)]="tagData.ende" (change)="berechneStunden()">
+    <div class="stundenanzeige">{{ tagData.stunden || 0 }} h</div>
+  </div>
+
+  <!-- Zeile 2: Pause -->
+  <div class="zeile pausezeit">
+    <input type="time" [(ngModel)]="tagData.pauseStart" (change)="berechneStunden()">
+    <span>–</span>
+    <input type="time" [(ngModel)]="tagData.pauseEnde" (change)="berechneStunden()">
+    <div class="pausenanzeige">{{ tagData.pausenDauer || 0 }} h</div>
+  </div>
+
+  <!-- Zeile 3: Teamstunden + Vorbereitung + Müll -->
+  <div class="zeile stunden">
+    <div class="team-stunden">{{ tagData.teamStunden || 0 }} h Team</div>
+  </div>
+
+  <div class="zeile stunden">
+    <div class="vorbereitungsstunden">{{ tagData.vorbereitungStunden || 0 }} h Vorbereitung</div>
+  </div>
+  
+
+  <!-- Zeile 4: Tags -->
+  <div class="zeile tags">
+    <select [(ngModel)]="tagData.flag">
+      <option value="">– Tag wählen –</option>
+      <option value="Homeoffice">🍕 Mittagessen</option>
+      <option value="Urlaub">🌴 Urlaub</option>
+      <option value="Schulung">📘 Schulung</option>
+    </select>
+    <button class="trash" (click)="loeschen()">🗑️</button>
+  </div>
+
+</div>

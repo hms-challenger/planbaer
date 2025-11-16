@@ -1,0 +1,153 @@
+<div *ngIf="!loading; else loadingTpl" class="dialog-form">
+  <h2 class="dialog-title">{{ dialogTitel }}</h2>
+
+  <form [formGroup]="form" class="form-grid">
+    <!-- Persönliche Daten -->
+    <div class="divider">Persönliche Daten</div>
+
+    <mat-form-field appearance="outline" class="padded-field">
+      <mat-label>Vorname</mat-label>
+      <input matInput formControlName="vorname" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="padded-field">
+      <mat-label>Nachname</mat-label>
+      <input matInput formControlName="nachname" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="padded-field">
+      <mat-label>Geburtstag</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="geburtstag" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="padded-field">
+      <mat-label>E-Mail</mat-label>
+      <input matInput formControlName="mail" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="padded-field">
+      <mat-label>Telefon</mat-label>
+      <input matInput formControlName="tel" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="padded-field">
+      <mat-label>Telefon privat</mat-label>
+      <input matInput formControlName="tel_p" />
+    </mat-form-field>
+
+    <!-- Adresse -->
+    <div class="divider">Adresse</div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="padded-field flex-grow">
+        <mat-label>Straße</mat-label>
+        <input matInput formControlName="strasse" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="padded-field small-field">
+        <mat-label>Hausnummer</mat-label>
+        <input matInput formControlName="nr" />
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="padded-field small-field">
+        <mat-label>PLZ</mat-label>
+        <input matInput formControlName="plz" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="padded-field flex-grow">
+        <mat-label>Ort</mat-label>
+        <input matInput formControlName="ort" />
+      </mat-form-field>
+    </div>
+
+    <!-- Beschäftigung -->
+    <div class="divider">Beschäftigung</div>
+    
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="padded-field flex-grow tooltip">
+        <mat-label>Positions-ID</mat-label>
+        <input matInput formControlName="posid"/>
+        <span class="tooltiptext">
+          1. Leitung <br>
+          2. Stellvertr. Leitung <br>
+          3. Erzieher/in <br>
+          4. Kinderpfleger/in <br>
+          5. Inklusion / Heilpädagogik <br>
+          6. Praktikant/in / FSJ / BFD <br>
+          7. Sprache / Logopädie <br>
+          8. Musik / Kunst <br>
+          9. Therapeutische Fachkraft <br>
+          10. Verwaltungsmitarbeiter/in <br>
+          11. Hausmeister/in <br>
+          12. Küchenpersonal <br>
+          13. Reinigungskraft
+        </span>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="padded-field flex-grow tooltip">
+        <mat-label>Status-ID</mat-label>
+        <input matInput formControlName="statusid" />
+        <span class="tooltiptext">
+          1. aktiv <br>
+          2. krank <br>
+          3. Urlaub <br>
+          4. abgemeldet <br>
+          5. fehlt <br>
+          6. Elternzeit / Mutterschutz <br>
+          7. Fortbildung / Schulung <br>
+          8. Sabbatical / Sonderurlaub <br>
+          9. Probezeit <br>
+          10. deaktiviert
+        </span>
+      </mat-form-field>
+    </div>
+
+    <!-- Zeiten -->
+    <div class="divider">Zeiten</div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="padded-field small-field">
+        <mat-label>Soll</mat-label>
+        <input matInput formControlName="soll" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="padded-field small-field">
+        <mat-label>Team</mat-label>
+        <input matInput formControlName="team" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="padded-field small-field">
+        <mat-label>Vorbereitung</mat-label>
+        <input matInput formControlName="vorbereitung" />
+      </mat-form-field>
+    </div>
+
+    <!-- Buttons -->
+    <div class="dialog-actions">
+      <button
+        mat-stroked-button
+        color="primary"
+        [disabled]="!form.valid"
+        (click)="onSave()"
+      >
+        {{ dialogButton }}
+      </button>
+
+      <button mat-stroked-button color="warn" (click)="onCancel()">
+        Abbrechen
+      </button>
+    </div>
+  </form>
+</div>
+
+<ng-template #loadingTpl>
+  <div class="loading-container">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>
+
+

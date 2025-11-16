@@ -1,0 +1,75 @@
+<table class="dienstplan" *ngIf="!loading && !error">
+  <thead>
+    <tr>
+      <th class="team">Woche 45: <br> 
+        13.11. - 17.11.2025
+      </th>
+      <th *ngFor="let tag of tage">{{ tag }}</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <!-- Admin-Zeile -->
+    <tr class="admin-row">
+      <td class="team admin">Admin</td>
+      <td *ngFor="let tag of tage" class="tag-feld">
+        <select class="admin-select" [(ngModel)]="adminPlan[tag]" (change)="adminSelect(tag, adminPlan[tag])">
+          <option [ngValue]="null">– auswählen –</option>
+          <option *ngFor="let m of aktiveMitarbeitende" [ngValue]="m.stammid">
+            {{ m.vorname }} {{ m.nachname }}
+          </option>
+        </select>
+      </td>
+    </tr>
+
+    <!-- Mitarbeitendenzeilen -->
+    <tr *ngFor="let zeile of dienstplan">
+      <td class="team">
+        <div class="nameheader">
+          {{ zeile.vorname }} {{zeile.nachname}}
+        </div> <br>
+        Soll: {{ zeile.soll }} <br>
+        Team: {{ zeile.team }} <br>
+        Vorbereitung: {{ zeile.vorbereitung }}
+      </td>
+
+      <td *ngFor="let tag of tage" class="tag-feld">
+
+        <!-- [+] Button -->
+        <div *ngIf="!zeile.tage[tag].expanded" class="plus" (click)="toggleExpand(zeile.tage[tag])">
+          [+]
+        </div>
+
+        <!-- Expandierte Zelle -->
+        <div *ngIf="zeile.tage[tag].expanded">
+          <app-zelle-component
+            [tagData]="zeile.tage[tag]"
+            (stundenGeaendert)="berechneStunden($event, zeile)"
+            (geloescht)="loeschen($event, zeile)">
+          </app-zelle-component>
+        </div>
+      </td>
+
+      <td class="team">
+        <div class="nameheaderLeft">
+          {{ zeile.vorname }} {{ zeile.nachname }}
+        </div>
+        <br>
+        Geleistet: 
+          <span [ngClass]="{'ueberstunden': zeile.geleistet > (zeile.soll || 0)}">
+            {{ zeile.geleistet || 0 }} h
+          </span>
+          <br>
+        Soll-R: 
+        <span [ngClass]="{'negativ': zeile.rest < 0, 'positiv': zeile.rest >= 0}">
+          {{ zeile.rest }} h
+        </span>
+        <br>
+        <!-- Team: {{ zeile.team }} <br>
+        Vorbereitung: {{ zeile.vorbereitung }} -->
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<button (click)="speichern()">💾 Dienstplan speichern</button>

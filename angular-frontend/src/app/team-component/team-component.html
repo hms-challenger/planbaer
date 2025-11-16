@@ -1,0 +1,54 @@
+<section class="team-page">
+  <div class="team-container">
+
+    <!-- Obere Filterleiste -->
+    <div class="filter-toolbar">
+
+      <!-- Suchfeld -->
+      <mat-form-field appearance="outline" class="filter-input" class="padded-field">
+        <mat-label>Suche</mat-label>
+        <input matInput placeholder="Suchen..." (keyup)="applyFilter($event.target.value)">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="column-dropdown" class="padded-field">
+        <mat-label>Filter auswählen</mat-label>
+        <mat-select
+          [(ngModel)]="selectedColumnKeys"
+          multiple
+          (selectionChange)="onColumnsChange()"
+          [panelClass]="'team-filter-panel'">
+          <mat-option *ngFor="let col of allColumns" [value]="col.key">
+            {{ col.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+
+      <!-- Button für neues Teammitglied -->
+      <button mat-flat-button color="primary" class="neues-team-button" (click)="onNeuesTeammitglied()">
+        Neues Teammitglied
+      </button>
+
+    </div> <!-- Ende filter-toolbar -->
+
+    <!-- Tabelle -->
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 custom-table">
+
+      <ng-container *ngFor="let col of displayedColumns" [matColumnDef]="col.key">
+        <th mat-header-cell *matHeaderCellDef class="header">{{ col.label }}</th>
+        <td mat-cell *matCellDef="let element">{{ element[col.key] }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumnKeys"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnKeys"
+          class="clickable-row"
+          (dblclick)="onRowDoubleClick(row)">
+      </tr>
+    </table>
+
+  </div>
+
+  <div class="team-content">
+    <router-outlet></router-outlet>
+  </div>
+</section>
