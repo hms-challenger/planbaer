@@ -1,2 +1,3 @@
 zum starten: 
 docker-compose up -d
+ng serve
