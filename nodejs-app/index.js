@@ -28,8 +28,13 @@ const pool = mariadb.createPool({
 const PORT = process.env.PORT || 3000;
 
 // === Hilfsfunktionen ===
-function success(res, message, data = null) {
-  res.status(200).json({ success: true, message, data });
+function success(res, message, data) {
+  const replacer = (key, value) => typeof value === 'bigint' ? value.toString() : value;
+  res.status(200).json({
+    success: true,
+    message,
+    data: data ?? {} // sicherstellen, dass immer ein Objekt zurückkommt
+  });
 }
 
 function failure(res, message, err) {
@@ -59,6 +64,7 @@ const tables = [
   "m_zeiten",
   "m_position",
   "m_stamm_view",
+  "m_stamm_aktiv"
 ];
 
 tables.forEach((table) => {
@@ -104,21 +110,27 @@ app.get("/api/m_stamm/:id", async (req, res) => {
 app.post("/api/m_stamm", async (req, res) => {
   let conn;
   try {
-
-    conn = await pool.getConnection();
     const m = req.body;
+
+    if (!m.nachname) {
+      return res.status(400).json({ success: false, error: "Nachname darf nicht leer sein" });
+    }
+
+    // Leere Strings zu null
     for (const key in m) {
       if (m[key] === "") m[key] = null;
-    } 
+    }
 
+    console.log("Daten für Insert:", m);
+
+    conn = await pool.getConnection();
     const result = await conn.query(
       `INSERT INTO m_stamm 
-        (
-          nachname, vorname, mail, tel, tel_p, geburtstag, strasse, nr, plz, ort, posid, statusid, soll, team, vorbereitung
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        (vorname, nachname, mail, tel, tel_p, geburtstag, strasse, nr, plz, ort, posid, statusid, soll, team, vorbereitung)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
-        m.nachname,
         m.vorname ?? null,
+        m.nachname,
         m.mail ?? null,
         m.tel ?? null,
         m.tel_p ?? null,
@@ -135,30 +147,28 @@ app.post("/api/m_stamm", async (req, res) => {
       ]
     );
 
-    success(res, "Mitarbeitende angelegt", { id: result.insertId ?? null });
+    success(res, "Mitarbeitende angelegt", { id: Number(result.insertId ?? 0) });
   } catch (err) {
-    console.error(err);       // MariaDB-Fehler direkt sehen
+    console.error(err);
     res.status(500).json({ success: false, error: err.sqlMessage ?? err.message });
   } finally {
     if (conn) conn.release();
   }
 });
 
+
 // 🔹 Mitarbeiter aktualisieren
 app.put("/api/m_stamm/:id", async (req, res) => {
   let conn;
   try {
-    
-    conn = await pool.getConnection();
     const id = req.params.id;
     const m = req.body;
-    for (const key in m) {
-      if (m[key] === "") m[key] = null;
-    }
+    for (const key in m) if (m[key] === "") m[key] = null;
 
+    conn = await pool.getConnection();
     await conn.query(
       `UPDATE m_stamm 
-         SET 
+       SET 
          nachname = COALESCE(?, nachname),
          vorname = COALESCE(?, vorname),
          mail = COALESCE(?, mail),
@@ -175,33 +185,22 @@ app.put("/api/m_stamm/:id", async (req, res) => {
          team = COALESCE(?, team),
          vorbereitung = COALESCE(?, vorbereitung)
        WHERE stammid = ?`,
-        [
-          m.nachname, 
-          m.vorname, 
-          m.mail, 
-          m.tel, 
-          m.tel_p, 
-          m.geburtstag, 
-          m.strasse, 
-          m.nr, 
-          m.plz, 
-          m.ort, 
-          m.posid, 
-          m.statusid,
-          m.soll,
-          m.team,
-          m.vorbereitung,
-          id
-        ]
+      [
+        m.nachname, m.vorname, m.mail, m.tel, m.tel_p, m.geburtstag, m.strasse,
+        m.nr, m.plz, m.ort, m.posid, m.statusid, m.soll, m.team, m.vorbereitung,
+        id
+      ]
     );
 
-    success(res, "Mitarbeitende aktualisiert");
+    // Wichtig: data immer als Objekt senden, nicht leer/true/etc.
+    success(res, "Mitarbeitende aktualisiert", {});
   } catch (err) {
     failure(res, "Fehler beim Aktualisieren des Mitarbeitenden", err);
   } finally {
     if (conn) conn.release();
   }
 });
+
 
 // 🔹 Position anlegen
 app.post("/api/m_position", async (req, res) => {
