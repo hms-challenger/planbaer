@@ -77,13 +77,13 @@ export class DienstplanComponent implements OnInit {
   }
 
   /** Toggle Input-Felder pro Zelle */
-  toggleExpand(tagFeld: any) {
+  toggleExpand(tagFeld: any, zeile?: any) {
     tagFeld.expanded = !tagFeld.expanded;
 
     // Beispielwerte für Anzeige
     if (tagFeld.expanded) {
-      tagFeld.teamStunden = 2;
-      tagFeld.vorbereitungStunden = 3;
+      tagFeld.teamStunden = zeile.team;
+      tagFeld.vorbereitungStunden = zeile.vorbereitung;
     }
   }
   /** Stunden berechnen */

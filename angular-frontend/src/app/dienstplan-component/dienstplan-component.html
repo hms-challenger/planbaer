@@ -36,7 +36,7 @@
       <td *ngFor="let tag of tage" class="tag-feld">
 
         <!-- [+] Button -->
-        <div *ngIf="!zeile.tage[tag].expanded" class="plus" (click)="toggleExpand(zeile.tage[tag])">
+        <div *ngIf="!zeile.tage[tag].expanded" class="plus" (click)="toggleExpand(zeile.tage[tag], zeile)">
           [+]
         </div>
 

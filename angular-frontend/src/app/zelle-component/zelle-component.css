@@ -1,150 +1,88 @@
-/* Modernes, responsives Styling für die Zelle */
-:root{
-  --bg: #ffffff;
-  --muted: #6b7280;
-  --accent: #2563eb; /* blau */
-  --success: #059669;
-  --purple: #7c3aed;
-  --danger: #dc2626;
-  --surface: #f8fafc;
-  --card-shadow: 0 6px 18px rgba(15,23,42,0.06);
-  --radius: 10px;
-  /* Fixed cell sizing - adjust to change component fixed size */
-  --cell-width: 360px; /* fixed width of the zelle */
-  --cell-min-height: 160px; /* optional minimum height */
+/* Expandierter Container – bleibt exakt 140x140 */
+.expanded-cell {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 6px;
+  font-family: "Inter", sans-serif;
+  font-size: 15px; /* <-- geändert */
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+
+  width: 100%;
+  height: 100%; 
+  max-height: 100%;
+  overflow-y: scroll;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-/* Container */
-.expanded-cell {
-  /* Container der Zelle */
-  .expanded-cell {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: stretch;
-    box-sizing: border-box;
-    padding: 4px;
-    font-family: "Inter", sans-serif;
-    font-size: 13px;
-  }
+/* Zeilen */
+.zeile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  width: 100%;
+}
 
-  /* Jede Zeile innerhalb der Zelle */
-  .zeile {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    width: 100%;
-  }
+.zeile > * {
+  flex-shrink: 0;
+}
 
-  /* Zeile 1: Arbeitszeit + Stunden */
-  .zeile.arbeitszeit input[type="time"] {
-    width: 55px;
-    height: 26px;
-    font-size: 13px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 0;
-  }
+/* Zeitfelder */
+input[type="time"] {
+  width: 60px !important;
+  min-width: 60px;
+  max-width: 60px;
+  height: 28px;
 
-  .zeile.arbeitszeit .stundenanzeige {
-    font-weight: 600;
-    font-size: 13px;
-    color: #333;
-    min-width: 45px;
-    text-align: right;
-  }
+  font-size: 15px; /* <-- geändert */
 
-  /* Zeile 2: Pausezeit */
-  .zeile.pausezeit input[type="time"] {
-    width: 55px;
-    height: 26px;
-    font-size: 13px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 0;
-  }
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: #fff;
+  padding: 2px 4px;
+}
 
-  .zeile.pausezeit .pausenanzeige {
-    font-weight: 600;
-    font-size: 13px;
-    color: #333;
-    min-width: 45px;
-    text-align: right;
-  }
+input[type="time"]:focus {
+  border-color: var(--accent);
+  outline: none;
+}
 
-  /* Zeile 3: Tags/Flags */
-  .zeile.tags select,
-  .zeile.tags .placeholder {
-    width: 100%;
-    height: 26px;
-    font-size: 12px;
-    border: 1px solid #bbb;
-    border-radius: 4px;
-    background-color: #fff;
-    color: #555;
-    text-align: center;
-  }
+input[type="time"], select, .stundenanzeige {
+  flex-shrink: 0;
+}
 
-  /* Zeile 4: Teamstunden, Vorbereitung, Mülleimer */
-  .zeile.stunden {
-    display: flex;
-    justify-content: space-between;
-    align-items: left;
-    font-size: 12px;
-    font-weight: 500;
-    color: #1a5d1a;
-    width: 100%;
-  }
+/* Dropdown */
+select {
+  width: 100px;        /* breiter für bessere Lesbarkeit */
+  min-width: 100px;
+  max-width: 100px;
 
-  .team-stunden {
-    color: #006400;
-  }
+  font-size: 15px;    /* <-- geändert */
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  padding: 2px 4px;
+}
 
-  .vorbereitungsstunden {
-    color: #764ba2;
-  }
+/* Stunden / Anzeigen */
+.stundenanzeige,
+.pausenanzeige {
+  width: 50px;
+  text-align: right;
+  font-size: 15px; /* <-- geändert */
+}
 
-  .trash {
-    background: transparent;
-    border: none;
-    color: #b33;
-    cursor: pointer;
-    font-size: 16px;
-    line-height: 1;
-    transition: transform 0.1s ease;
-  }
-
-  .trash:hover {
-    color: #e00;
-    transform: scale(1.2);
-  }
-    .toggle.collapse{ float:right; margin-left:auto }
-
-    /* When the component is used inside a fixed cell, ensure collapsed card fits */
-    .zelle-root .collapsed-cell, .zelle-root .expanded-cell{ width:100% }
-
-    /* responsive: kleine Bildschirme -> Spalten stapeln */
-    @media (max-width:520px){
-    .zeile{ grid-template-columns: 1fr; row-gap:8px }
-    .zeile.arbeitszeit, .zeile.pausezeit{ grid-template-columns: 1fr 1fr; }
-    input[type="time"]{ width:100% }
-    .stundenanzeige, .pausenanzeige{ justify-self:start }
-    .zeile.tags{ grid-template-columns: 1fr auto }
-    }
-
-    /* Utility */
-    .muted { 
-        color:var(--muted) 
-    }
-
-/* small helper to visually separate stacked sections when needed */
-    .divider { 
-        height:1px; 
-        background:linear-gradient(90deg, rgba(15,23,42,0.03), transparent); 
-        margin:6px 0; 
-        border-radius:2px 
-    }
+/* Trash */
+.trash {
+  background: transparent;
+  border: none;
+  color: #b91c1c;
+  font-size: 16px;
+  cursor: pointer;
 }
