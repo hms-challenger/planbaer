@@ -168,7 +168,12 @@ export class DienstplanComponent implements OnInit {
           tageData[tag] = { ...feld };
         }
       }
-      return { stammid: zeile.stammid, team: zeile.team, tage: tageData };
+      return { 
+        stammid: zeile.stammid, 
+        nachname: zeile.nachname,
+        vorname: zeile.vorname,
+        team: zeile.team, 
+        tage: tageData };
     });
 
     console.log('💾 Dienstplan speichern:', payload);

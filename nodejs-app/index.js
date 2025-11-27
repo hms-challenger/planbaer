@@ -242,6 +242,135 @@ app.post("/api/m_status", async (req, res) => {
   }
 });
 
+app.get("/api/dienstplan/:woche", async (req, res) => {
+  let conn;
+  try {
+    const woche = Number(req.params.woche);
+
+    conn = await pool.getConnection();
+
+    // Wochen-ID holen
+    const week = await conn.query(
+      "SELECT * FROM dienstplan_week WHERE woche = ?",
+      [woche]
+    );
+
+    if (week.length === 0) {
+      return success(res, "Dienstplan nicht vorhanden – leer zurückgegeben", {
+        admin: {},
+        mitarbeiter: []
+      });
+    }
+
+    const weekId = week[0].id;
+
+    // Admin-Daten
+    const adminRows = await conn.query(
+      "SELECT tag, stammid FROM dienstplan_admin WHERE week_id = ?",
+      [weekId]
+    );
+
+    // Mitarbeiter-Tage
+    const dayRows = await conn.query(
+      "SELECT * FROM dienstplan_day WHERE week_id = ?",
+      [weekId]
+    );
+
+    const grouped = {};
+
+    for (const row of dayRows) {
+      if (!grouped[row.stammid]) grouped[row.stammid] = {};
+      grouped[row.stammid][row.tag] = row;
+    }
+
+    success(res, "Dienstplan geladen", {
+      admin: adminRows,
+      mitarbeiter: grouped
+    });
+
+  } catch (err) {
+    failure(res, "Fehler beim Laden des Dienstplans", err);
+  } finally {
+    if (conn) conn.release();
+  }
+});
+
+app.post("/api/dienstplan/:woche", async (req, res) => {
+  let conn;
+  try {
+    const woche = Number(req.params.woche);
+    const body = req.body;
+
+    conn = await pool.getConnection();
+    await conn.beginTransaction();
+
+    // 1. Woche eintragen oder holen
+    let week = await conn.query(
+      "SELECT id FROM dienstplan_week WHERE woche = ?",
+      [woche]
+    );
+
+    let weekId;
+
+    if (week.length === 0) {
+      const insert = await conn.query(
+        "INSERT INTO dienstplan_week (woche, jahr) VALUES (?, YEAR(CURDATE()))",
+        [woche]
+      );
+      weekId = insert.insertId;
+    } else {
+      weekId = week[0].id;
+
+      // existierende Daten löschen
+      await conn.query("DELETE FROM dienstplan_admin WHERE week_id = ?", [weekId]);
+      await conn.query("DELETE FROM dienstplan_day WHERE week_id = ?", [weekId]);
+    }
+
+    // 2. Admin speichern
+    for (const tag in body.admin) {
+      await conn.query(
+        "INSERT INTO dienstplan_admin (week_id, tag, stammid) VALUES (?, ?, ?)",
+        [weekId, tag, body.admin[tag]]
+      );
+    }
+
+    // 3. Mitarbeiter speichern
+    for (const mitarbeiter of body.mitarbeiter) {
+      const id = mitarbeiter.stammid;
+
+      for (const tag in mitarbeiter.tage) {
+        const t = mitarbeiter.tage[tag];
+
+        await conn.query(
+          `INSERT INTO dienstplan_day 
+            (week_id, stammid, tag, start, ende, pause_start, pause_ende, 
+             stunden, team_stunden, vorbereitung_stunden, geleistet, soll, rest)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          [
+            weekId, id, tag,
+            t.start, t.ende, t.pauseStart, t.pauseEnde,
+            t.stunden, t.teamStunden, t.vorbereitungStunden,
+            mitarbeiter.geleistet,
+            mitarbeiter.soll,
+            mitarbeiter.rest
+          ]
+        );
+      }
+    }
+
+    await conn.commit();
+    success(res, "Dienstplan gespeichert");
+
+  } catch (err) {
+    if (conn) await conn.rollback();
+    failure(res, "Fehler beim Speichern des Dienstplans", err);
+  } finally {
+    if (conn) conn.release();
+  }
+});
+
+
+
 // === Serverstart ===
 app.listen(PORT, "0.0.0.0", () =>
   console.log(`🚀 Server läuft auf Port ${PORT}`)
